@@ -12,7 +12,6 @@ function* handler() {
 
 function* getUsers() {
     const userStateValues: UsersState = yield select(({users}: { users: UsersState }) => users)
-    console.log('userStateValues',userStateValues)
     const willSkipUsers = FETCH_MORE_USER_COUNT + userStateValues.skip;
 
     try {
