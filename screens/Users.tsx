@@ -5,13 +5,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as moviesAction from '../features/users/actions';
 import ListView from "../components/ListView";
 import {getUsersSelector} from "../features/users/selectors";
-import Button from '../components/Button';
 import {useNavigation} from "@react-navigation/native";
 
 export default function Users() {
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const {data} = useSelector(getUsersSelector);
+    const {data, isLoading} = useSelector(getUsersSelector);
     useEffect(() => {
         dispatch(moviesAction.getUsers());
     }, [])
@@ -22,8 +21,8 @@ export default function Users() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ListView data={data}/>
-            <Button onPress={onUserAddPress}>Add User</Button>
+            <ListView data={data} onEndReached={() => dispatch(moviesAction.getUsers())}
+                      isLoading={isLoading}/>
         </SafeAreaView>
     );
 }

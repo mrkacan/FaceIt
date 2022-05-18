@@ -7,11 +7,17 @@ const getUsers = (): types.UsersActionTypes => {
     };
 };
 
-const getUsersSuccess = (data: UserItem[]): types.UsersActionTypes => {
+const getUsersSuccess = (
+    data: UserItem[],
+    skip: number,
+    limit: number
+): types.UsersActionTypes => {
     return {
         type: types.GET_USERS_SUCCESS,
         payload: {
             data,
+            skip,
+            limit,
         },
     };
 };

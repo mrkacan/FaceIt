@@ -1,20 +1,19 @@
 import React from "react";
 import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
 import {UserItem} from '../features/users/types';
 import Item from "../components/Item";
-import {getUsersSelector} from "../features/users/selectors";
 import {useNavigation} from "@react-navigation/native";
 
 const INITIAL_LOAD = 10;
 
 type ListViewProps = {
     data: UserItem[];
+    onEndReached: () => void;
+    isLoading: boolean
 }
 
-const ListView: React.FC<ListViewProps> = ({data}) => {
+const ListView: React.FC<ListViewProps> = ({data, isLoading, onEndReached}) => {
     const navigation = useNavigation();
-    const {isLoading} = useSelector(getUsersSelector);
 
     const onItemPress = (item: UserItem) => {
         navigation.navigate("Details", {id: item.id})
@@ -36,6 +35,13 @@ const ListView: React.FC<ListViewProps> = ({data}) => {
                 }}
                 contentContainerStyle={styles.flatListContent}
                 numColumns={2}
+                removeClippedSubviews
+                onEndReachedThreshold={0.1}
+                onEndReached={() => {
+                    if (!isLoading) {
+                        onEndReached()
+                    }
+                }}
             />
         </>
     );

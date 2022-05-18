@@ -3,7 +3,11 @@ import * as types from './types';
 const initialState: types.UsersState = {
     data: [],
     isLoading: false,
-    error: ''
+    error: '',
+    total: 0,
+    skip: 0,
+    limit: 0,
+
 };
 
 const reducer = (state = initialState, action: types.UsersActionTypes) => {
@@ -18,7 +22,9 @@ const reducer = (state = initialState, action: types.UsersActionTypes) => {
         return {
             ...state,
             isLoading: false,
-            data: action.payload.data,
+            data: [...new Set([...state.data, ...action.payload.data])],
+            skip: action.payload.skip,
+            limit: action.payload.limit,
         };
     }
     case types.GET_USERS_FAILURE: {
